@@ -6,6 +6,7 @@ import {
   PencilIcon,
   PlusIcon,
   TrashIcon,
+  UploadCloud,
   XIcon,
 } from "lucide-react";
 import { dummyResumeData } from "../assets/assets";
@@ -16,6 +17,7 @@ const Dashboard = () => {
   const [showUploadResume, setShowUploadResume] = useState(false);
   const [title, setTitle] = useState("");
   const [resume, setResume] = useState(null);
+  const [editResumeId, setEditResumeId] = useState("");
   const [resumeId, setResumeId] = useState("");
   const navigate = useNavigate();
 
@@ -25,8 +27,18 @@ const Dashboard = () => {
     navigate("/app/builder/res123");
   };
 
+  const editTitle = async (event) => {
+    event.preventDefault();
+  };
+
   const loadAllResume = async () => {
     setAllResume(dummyResumeData);
+  };
+
+  const uploadResume = async (event) => {
+    event.preventDefault();
+    setShowUploadResume(false);
+    navigate("/app/builder/res123");
   };
 
   const colors = ["#9333ea", "#d97706", "#dc2626", "#0484c7", "#16a34a"];
@@ -62,6 +74,9 @@ const Dashboard = () => {
             className="w-full bg-white sm:max-w-36 h-48 flex flex-col items-center justify-center rounded-lg gap-2 
           text-slate-600 border border-dashed border-slate-300 group hover:border-purple-500 hover:shadow-lg 
           transition-all duration-300"
+            onClick={() => {
+              setShowUploadResume(true);
+            }}
           >
             <CloudIcon
               className="size-11 transition-all duration-300 p-2.5 
@@ -79,6 +94,9 @@ const Dashboard = () => {
             const baseColor = colors[index % colors.length];
             return (
               <button
+                onClick={() => {
+                  navigate(`/app/builder/${resume._id}`);
+                }}
                 className=" relative w-full sm:max-w-36 h-48 flex flex-col items-center justify-center
             rounded-lg gap-2 border group hover:shadow-lg transition-all duration-300
             "
@@ -104,7 +122,12 @@ const Dashboard = () => {
                 >
                   Updated on {new Date(resume.updatedAt).toLocaleDateString()}
                 </p>
-                <div className="absolute top-1 right-1 group-hover:flex items-center hidden">
+                <div
+                  className="absolute top-1 right-1 group-hover:flex items-center hidden"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
                   <TrashIcon
                     className="size-7 p-1.5 hover bg-white/50 rounded text-slate-700
                   transition-colors"
@@ -112,6 +135,10 @@ const Dashboard = () => {
                   <PencilIcon
                     className="size-7 p-1.5 hover bg-white/50 rounded text-slate-700
                   transition-colors"
+                    onClick={() => {
+                      setEditResumeId(resume._id);
+                      setTitle(resume.title);
+                    }}
                   />
                 </div>
               </button>
@@ -124,6 +151,9 @@ const Dashboard = () => {
             className="fixed inset-0 bg-black/70 backdrop-blur bg-opacity-50 
             z-10 flex items-center justify-center"
             onSubmit={createResume}
+            onClick={() => {
+              setShowCreateResume(false);
+            }}
           >
             <div
               onClick={(e) => e.stopPropagation()}
@@ -135,6 +165,10 @@ const Dashboard = () => {
                 placeholder="Enter Resume Title"
                 className="w-full
                   px-4 py-2 mb-4 focus:border-grenn-600 ring-green-600"
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                }}
+                value={title}
                 required
               />
               <button
@@ -148,6 +182,125 @@ const Dashboard = () => {
               hover:text-slate-600 cursor-pointer transition-colors"
                 onClick={() => {
                   setShowCreateResume(false);
+                  setTitle("");
+                }}
+              />
+            </div>
+          </form>
+        )}
+
+        {showUploadResume && (
+          <form
+            className="fixed inset-0 bg-black/70 backdrop-blur bg-opacity-50 
+            z-10 flex items-center justify-center"
+            onSubmit={uploadResume}
+            onClick={() => {
+              setShowUploadResume(false);
+            }}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="relative bg-slate-50 border shadow-md rounded-lg w-full max-w-sm p-6"
+            >
+              <h2 className="text-xl font-medium mb-4">Upload Resume</h2>
+              <input
+                type="text"
+                placeholder="Enter Resume Title"
+                className="w-full
+                  px-4 py-2 mb-4 focus:border-grenn-600 ring-green-600"
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                }}
+                value={title}
+                required
+              />
+              <div>
+                <label
+                  htmlFor="resumeInput"
+                  className="block text-sm text-slate-700"
+                >
+                  Select Resume File
+                  <div
+                    className="flex flex-col items-center justify-center gap-2 border
+                  group text-slate-400 border-slate-400 border-dashed rounded-md p-4
+                  py-10 my-4 hover:border-green-500 hover:text-green-700 cursor-pointer
+                  transition-colors"
+                  >
+                    {resume ? (
+                      <p className="text-green-700">{resume.name}</p>
+                    ) : (
+                      <>
+                        <UploadCloud className="size-14 stroke-1" />
+                        <p>Upload Resume</p>
+                      </>
+                    )}
+                  </div>
+                </label>
+                <input
+                  type="file"
+                  name=""
+                  id="resumeInput"
+                  accept=".pdf"
+                  hidden
+                  onChange={(e) => {
+                    setResume(e.target.files[0]);
+                  }}
+                />
+              </div>
+              <button
+                className="w-full py-2 bg-green-600 text-white rounded
+                  hover:bg-green-700 transition-colors"
+              >
+                Upload Resume
+              </button>
+              <XIcon
+                className="absolute top-4 right-4 text-slate-400
+              hover:text-slate-600 cursor-pointer transition-colors"
+                onClick={() => {
+                  setShowUploadResume(false);
+                  setTitle("");
+                }}
+              />
+            </div>
+          </form>
+        )}
+
+        {editResumeId && (
+          <form
+            className="fixed inset-0 bg-black/70 backdrop-blur bg-opacity-50 
+            z-10 flex items-center justify-center"
+            onSubmit={editTitle}
+            onClick={() => {
+              setEditResumeId("");
+            }}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="relative bg-slate-50 border shadow-md rounded-lg w-full max-w-sm p-6"
+            >
+              <h2 className="text-xl font-medium mb-4">Edit Resume Title</h2>
+              <input
+                type="text"
+                placeholder="Enter Resume Title"
+                className="w-full
+                  px-4 py-2 mb-4 focus:border-grenn-600 ring-green-600"
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                }}
+                value={title}
+                required
+              />
+              <button
+                className="w-full py-2 bg-green-600 text-white rounded
+                  hover:bg-green-700 transition-colors"
+              >
+                Update
+              </button>
+              <XIcon
+                className="absolute top-4 right-4 text-slate-400
+              hover:text-slate-600 cursor-pointer transition-colors"
+                onClick={() => {
+                  setEditResumeId("");
                   setTitle("");
                 }}
               />

@@ -20,7 +20,7 @@ const PersonalInfoForm = ({
   };
   const fields = [
     {
-      key: "full name",
+      key: "full_name",
       label: "Full Name",
       icon: User,
       type: "text",

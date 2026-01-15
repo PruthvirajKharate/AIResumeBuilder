@@ -27,6 +27,13 @@ const Dashboard = () => {
     navigate("/app/builder/res123");
   };
 
+  const deleteResume = async (resumeId) => {
+    const confirm = window.confirm("Are you sure you want to delte the resume");
+    if (confirm) {
+      setAllResume((prev) => prev.filter((resume) => resume._id != resumeId));
+    }
+  };
+
   const editTitle = async (event) => {
     event.preventDefault();
   };
@@ -131,6 +138,9 @@ const Dashboard = () => {
                   <TrashIcon
                     className="size-7 p-1.5 hover bg-white/50 rounded text-slate-700
                   transition-colors"
+                    onClick={() => {
+                      deleteResume(resume._id);
+                    }}
                   />
                   <PencilIcon
                     className="size-7 p-1.5 hover bg-white/50 rounded text-slate-700

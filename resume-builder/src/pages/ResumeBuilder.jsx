@@ -11,7 +11,9 @@ import {
   GraduationCap,
   SparkleIcon,
   User,
+  ChevronRight,
 } from "lucide-react";
+import PersonalInfoForm from "../components/PersonalInfoForm";
 
 const ResumeBuilder = () => {
   const { resumeId } = useParams();
@@ -37,7 +39,7 @@ const ResumeBuilder = () => {
     }
   };
 
-  const [activeSessionIndex, setActiveSessionIndex] = useState(1);
+  const [activeSessionIndex, setActiveSessionIndex] = useState(0);
   const [removeBackground, setRemoveBackground] = useState(false);
 
   const section = [
@@ -97,7 +99,38 @@ const ResumeBuilder = () => {
                       <ChevronLeft className="size-4" /> Previous
                     </button>
                   )}
+                  <button
+                    className={`flex items-center gap-1 p-3 rounded-lg text-sm font-medium
+                    text-gray-600 hover:bg-gray-50 transition-all ${
+                      activeSessionIndex === section.length - 1 && `opacity-50`
+                    }`}
+                    disabled={activeSessionIndex === section.length}
+                    onClick={() => {
+                      setActiveSessionIndex((prevIndex) =>
+                        Math.min(prevIndex + 1, section.length - 1)
+                      );
+                    }}
+                  >
+                    <ChevronRight className="size-4" /> Next
+                  </button>
                 </div>
+              </div>
+
+              {/* Form Content */}
+              <div className="space-y-6">
+                {actvieSection.id === "personal" && (
+                  <PersonalInfoForm
+                    data={resumeData.personal_info}
+                    onChange={(data) => {
+                      setResumeData((prev) => ({
+                        ...prev,
+                        personal_info: data,
+                      }));
+                    }}
+                    removeBackground={removeBackground}
+                    setRemoveBackground={setRemoveBackground}
+                  />
+                )}
               </div>
             </div>
           </div>

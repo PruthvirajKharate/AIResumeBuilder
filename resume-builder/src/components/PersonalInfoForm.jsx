@@ -64,7 +64,6 @@ const PersonalInfoForm = ({
           )}
           <input
             type="file"
-            name=""
             accept="image/jpeg, image/png"
             className="hidden"
             onChange={(e) => {
@@ -89,7 +88,6 @@ const PersonalInfoForm = ({
                   setRemoveBackground((prev) => !prev);
                 }}
                 checked={removeBackground}
-                id=""
               />
               <div
                 className="w-9 h-5 bg-slate-300 rounded-full peer-checked:bg-green-600

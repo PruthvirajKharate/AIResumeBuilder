@@ -36,8 +36,8 @@ const ExperienceForm = ({ data, onChange }) => {
             <p className="text-sm text-gray-500">Add your job experience</p>
           </div>
           <button
-            className="flex items-center gap-2 px-3 py-1 text-sm bg-purple-100 text-purple-700
-        rounded hover:bg-purple-300 transition-colors "
+            className="flex items-center gap-2 px-3 py-1 text-sm bg-green-100 text-green-700
+        rounded hover:bg-green-200 transition-colors "
             onClick={addExperience}
           >
             <Plus className="size-4" />
@@ -98,6 +98,7 @@ const ExperienceForm = ({ data, onChange }) => {
                   <input
                     type="month"
                     name=""
+                    placeholder="YYYY-MM"
                     className="px-3 py-2 text-sm rounded-lg"
                     value={experience.start_date || ""}
                     onChange={(e) => {
@@ -109,6 +110,7 @@ const ExperienceForm = ({ data, onChange }) => {
                   <input
                     type="month"
                     name=""
+                    placeholder="YYYY-MM"
                     className="px-3 py-2 text-sm rounded-lg disabled:bg-gray-100"
                     value={experience.end_date || ""}
                     disabled={experience.is_current}

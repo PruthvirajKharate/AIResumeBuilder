@@ -43,12 +43,12 @@ const ResumePreview = ({ data, template, accentColor, classes = "" }) => {
             body * {
               visibility: hidden;
             }
-            #resume-preview #resume-preview * {
+            #resume_preview, #resume_preview * {
               visibility: visible;
             }
-            #resume-preview {
+            #resume_preview {
               position: absolute;
-              lef: 0;
+              left: 0;
               top: 0;
               width: 100%;
               height: auto;
@@ -56,6 +56,8 @@ const ResumePreview = ({ data, template, accentColor, classes = "" }) => {
               padding: 0;
               box-shadow: none !important
               border: none !important
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
             }
           }
         `}
